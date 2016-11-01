@@ -1,0 +1,13 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+ Create On: November 01, 2016
+    Author: corvo
+"""
+
+
+mysql_host = '127.0.0.1'
+mysql_user= 'root'
+mysql_password = '***'
+mysql_database = '***'
