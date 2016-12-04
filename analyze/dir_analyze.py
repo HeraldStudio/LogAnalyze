@@ -7,7 +7,7 @@
 """
 import os
 import re
-from main import logging, session
+from main import logging, session, max_analyze
 from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
 from analyze.day_log import DayLog
@@ -54,6 +54,11 @@ def process_every_file(_file_path, _date):
     if old:
         logging.warning("current date has been analyzed")
         return 
+
+    global max_analyze      # 全局变量, 在main.py中定义
+    max_analyze -= 1
+    if max_analyze == 0:
+        return
 
     dayLog = DayLog(_date)
     parse_file(dayLog, _file_path)

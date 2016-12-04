@@ -18,6 +18,10 @@ session = Session()
 import analyze.dir_analyze 
 from analyze.day_log import DayLog
 
+
+# 每天晚上最多执行3天的日志分析
+max_analyze = 3
+
 # Python 日志记录
 log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
 logging.basicConfig(format=log_format, level=logging.DEBUG)
