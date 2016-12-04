@@ -93,7 +93,7 @@ def parse_file(dayLog, file):
             status =  matchs.group("status")
             refer = matchs.group("refer")
             userAgent = matchs.group("userAgent")  
-
+            
             logItem = LogItem(time, ip, request, userAgent, refer, status) 
             dayLog.add_log_item(logItem)                                # 向对象中添加元素
 

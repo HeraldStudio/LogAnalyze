@@ -7,27 +7,39 @@
 """
 
 import logging
-from analyze.day_log import DayLog
 from analyze.util import parse_file
+from databases.db import engine
+from sqlalchemy.orm import sessionmaker
+
+Session = sessionmaker()        # 生成会话
+Session.configure(bind=engine)
+session = Session()
+
+import analyze.dir_analyze 
+from analyze.day_log import DayLog
 
 # Python 日志记录
 log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
 logging.basicConfig(format=log_format, level=logging.DEBUG)
   
 #日志的位置  
-dir_log  = r"../"  
+dir_log  = r"./log"
 
 
 if __name__ == "__main__":  
     #processDir(dir_log)  
     #parse_file("../access_api.log-20160921")
-    dayLog = DayLog('s');
-    parse_file(dayLog, "./log.example")
-    #parse_file("./log/access_api.log-20160921")
 
-    dayLog.get_every_hour_called()
-    dayLog.get_most_ip()
-    dayLog.get_most_called()
-    dayLog.get_device_called()
+    #dayLog = DayLog('log.example')
+    #parse_file(dayLog, "./log.example")
+    #parse_file("./log/access_api.log-20160921")
+    #dayLog.get_every_hour_called()
+    #dayLog.get_most_ip()
+    #dayLog.get_most_called()
+    #dayLog.get_device_called()
     
-    dayLog.store_data()
+    #dayLog.store_data()
+    
+    analyze.dir_analyze.process_dir("./log")
+    #session.commit()
+    session.close()
