@@ -12,7 +12,7 @@ from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
 from analyze.day_log import DayLog
 
-#  我们的日志文件名称 access_api.log-20160921
+#  我们的日志文件名称 access_api.log-20160921.gz
 fileP = 'access_api.log-(?P<date>\d*).gz'   # date别名为日志的时间尾巴, 例如20160921
 
 # 日志文件名称, date为时间

@@ -7,6 +7,7 @@
 """
 
 import re
+import time
 
 #POST /api/pe HTTP/1.1\
 apiP = r".*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*"
@@ -36,30 +37,37 @@ class LogItem():
     ios_version     = ""   # ios 版本
     android_version = ""   # android 版本
 
+
     def __init__(self, time, ip, api, device, parm, code):
+        """ 初始化函数中, 因为有过多的错误需要处理, 
+            需要认真阅读日志文件不断进行优化
+
+        """
         self.time = time
         self.ip = ip
-        self.api = api
-        matchs = (apiPattern.match(self.api))   #匹配api接口
 
+        matchs = (apiPattern.match(api))   #匹配api接口
         if matchs != None:  
             self.api = matchs.group('api')  
         else:
             self.api = 'error'
-            print(api)
-            print("error in api" + parm) 
+            # Api error
+            print("%d:%d api-error in api %s, parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, parm, device)) 
             
-        if self.api != 'auth' or self.api != 'update':
+        if self.api != 'auth' or self.api != 'update':   # 如果是在调用api, 则对uuid进行记录
+                                                         # 暂时uuid不进行使用
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 self.parm = matchs.group('uuid')
             else:
-                print('error in par ' + parm)
+                print("%d:%d uid-error in api %s, parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, parm, device)) 
                 self.parm = parm
         else:
             self.parm = parm
 
-        matchs = (devicePattern.match(device))
+        matchs = (devicePattern.match(device))          # 匹配设备信息
         if matchs != None:  
             if matchs.group('android') != None:
                 self.device = 'android'
@@ -68,14 +76,36 @@ class LogItem():
                 self.ios_version = matchs.group(3)
             elif matchs.group('all') != None:
                 self.device = 'other'
+                print("device : %s" % device)
             else:
-                print('error')
-                exit()
+                print("%d:%d dev-error in api %s, parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, parm, device)) 
         else:
             if device == '\"-\"':
                 self.device = 'empty_room'
             else:
-                print("error") 
-                print(device)
+                print("%d:%d dev-error in api %s, parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, parm, device)) 
                 exit()
+
         self.code = code
+
+def main():
+    """ 
+    测试主函数, 遇到有问题的log时, 将数据取出并在此进行测试
+    """
+    logItem = LogItem(
+        time.localtime(), 
+        '203.208.60.230',
+        'POST /api/card HTTP/1.1', 
+        '"okhttp/3.1.2"',
+        '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
+        '200'
+            ) 
+
+    print(logItem.device)
+    print(logItem.api)
+    print(logItem.parm)
+
+if __name__ == "__main__":
+    main()
