@@ -12,6 +12,7 @@ import re
 import os
 import time
 from analyze.log_item import LogItem
+import gzip
 
 # Python 日志记录
 log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
@@ -84,7 +85,9 @@ def parse_file(dayLog, file):
     matchs = logFilePattern.match(file)
     logging.info("process file %s." % (file)) 
 
-    for line in fileinput.input(os.path.join(file)):  
+    f_in = gzip.open(os.path.join(file), "rb")
+    for line in f_in:
+        line = bytes.decode(line)  
         matchs = nginxLogPattern.match(line)  
         if matchs != None:  
             ip = matchs.group("ip")

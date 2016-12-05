@@ -45,13 +45,17 @@ class LogItem():
         if matchs != None:  
             self.api = matchs.group('api')  
         else:
+            self.api = 'error'
             print(api)
-            print("error") 
-            exit()
+            print("error in api" + parm) 
             
         if self.api != 'auth' or self.api != 'update':
             matchs = (uuidPattern.match(parm))
-            self.parm = matchs.group('uuid')
+            if matchs != None:
+                self.parm = matchs.group('uuid')
+            else:
+                print('error in par ' + parm)
+                self.parm = parm
         else:
             self.parm = parm
 

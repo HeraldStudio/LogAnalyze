@@ -27,7 +27,7 @@ log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s'
 logging.basicConfig(format=log_format, level=logging.DEBUG)
   
 #日志的位置  
-dir_log  = r"./log"
+dir_log  = r"/var/log/nginx"
 
 
 if __name__ == "__main__":  
@@ -44,6 +44,6 @@ if __name__ == "__main__":
     
     #dayLog.store_data()
     
-    analyze.dir_analyze.process_dir("./log")
+    analyze.dir_analyze.process_dir(dir_log)
     #session.commit()
     session.close()

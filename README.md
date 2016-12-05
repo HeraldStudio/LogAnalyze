@@ -12,7 +12,7 @@ cp config.py.example config.py
 # m h  dom mon dow   command
 
 # 每天凌晨2点进行数据统计
-0 2 * * *  <You Path>/StartAnalyze.sh     # 请自行修改路径
+0 2 * * *  cd  <You Path> && ./StartAnalyze.sh     # 请自行修改路径
 ```
 
 
