@@ -44,13 +44,15 @@ def process_every_file(_file_path, _date):
 
     Args:
         file_path: 文件路径
-        date     : 日志文件日期
+        date     : 日志文件日期, 如果 date=='tmp', 则表明是临时测试使用
 
     Returns: TODO
 
     """
+    
     old = session.query(DayLogAnalyze).filter(DayLogAnalyze.date == _date).all()
 
+    # 查询数据库, 如果当前日期对应的日志已被解析, 则直接进行返回
     if old:
         logging.warning("current date has been analyzed")
         return 
@@ -69,4 +71,7 @@ def process_every_file(_file_path, _date):
     dayLog.get_ios_version()
     dayLog.get_android_version()
     
+    if _date == 'tmp':      # 临时检验的文件不保存到数据库, 只做分析使用
+        return
+
     dayLog.store_data()

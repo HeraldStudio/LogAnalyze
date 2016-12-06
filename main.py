@@ -10,6 +10,9 @@ import logging
 from analyze.util import parse_file
 from databases.db import engine
 from sqlalchemy.orm import sessionmaker
+from getopt import getopt
+import sys
+from analyze import dir_analyze
 
 Session = sessionmaker()        # 生成会话
 Session.configure(bind=engine)
@@ -29,6 +32,8 @@ logging.basicConfig(format=log_format, level=logging.DEBUG)
 #日志的位置  
 dir_log  = r"/var/log/nginx"
 
+def usage():
+    print("help")
 
 if __name__ == "__main__":  
     #processDir(dir_log)  
@@ -41,9 +46,17 @@ if __name__ == "__main__":
     #dayLog.get_most_ip()
     #dayLog.get_most_called()
     #dayLog.get_device_called()
-    
+    opts, args = getopt(sys.argv[1:], "hi:l:d:")
+    for op, value in opts:
+        if op == "-l":
+            analyze.dir_analyze.process_every_file(value, 'tmp')
+        elif op == "-d":
+            analyze.dir_analyze.process_dir(value)
+            session.commit()
+            session.close()
+        elif op == "-h":
+            usage()
+        else:
+            usage()
     #dayLog.store_data()
     
-    analyze.dir_analyze.process_dir(dir_log)
-    #session.commit()
-    session.close()

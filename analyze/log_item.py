@@ -54,9 +54,16 @@ class LogItem():
             # Api error
             print("%d:%d api-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device)) 
-            
-        if self.api != 'auth' or self.api != 'update':   # 如果是在调用api, 则对uuid进行记录
-                                                         # 暂时uuid不进行使用
+
+        # 空教室端口仅使用本服务器转发数据, 故而直接返回
+        if self.api == 'emptyroom':
+            self.device = 'web'
+            self.uuid = '0'
+            self.code = 'code'
+            return
+
+        # 如果是在调用api, 则对uuid进行记录, 暂时uuid不进行使用
+        if self.api != 'auth' or self.api != 'update':    
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 self.parm = matchs.group('uuid')
@@ -66,6 +73,8 @@ class LogItem():
                 self.parm = parm
         else:
             self.parm = parm
+            
+            
 
         matchs = (devicePattern.match(device))          # 匹配设备信息
         if matchs != None:  
@@ -76,7 +85,6 @@ class LogItem():
                 self.ios_version = matchs.group(3)
             elif matchs.group('all') != None:
                 self.device = 'other'
-                print("device : %s" % device)
             else:
                 print("%d:%d dev-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device)) 
