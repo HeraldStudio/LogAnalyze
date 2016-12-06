@@ -12,7 +12,11 @@ import time
 #POST /api/pe HTTP/1.1\
 apiP = r".*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*"
 
+# Android
+#
 # "okhttp/3.1.2" 
+# IOS难的令人发指
+#
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
 deviceP = r"(?P<android>.*okhttp.*)|"  \
