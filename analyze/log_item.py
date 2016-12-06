@@ -62,14 +62,14 @@ class LogItem():
             self.code = 'code'
             return
 
-        # 如果是在调用api, 则对uuid进行记录, 暂时uuid不进行使用
+        # 如果是在调用api, 则对uuid进行记录, 还有ip, 暂时uuid不进行使用
         if self.api != 'auth' or self.api != 'update':    
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 self.parm = matchs.group('uuid')
             else:
-                print("%d:%d uid-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
+                print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, ip, parm, device)) 
                 self.parm = parm
         else:
             self.parm = parm

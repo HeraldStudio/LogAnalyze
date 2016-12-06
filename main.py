@@ -12,7 +12,6 @@ from databases.db import engine
 from sqlalchemy.orm import sessionmaker
 from getopt import getopt
 import sys
-from analyze import dir_analyze
 
 Session = sessionmaker()        # 生成会话
 Session.configure(bind=engine)
@@ -58,5 +57,7 @@ if __name__ == "__main__":
             usage()
         else:
             usage()
+
+    print("finish, have fun")
     #dayLog.store_data()
     
