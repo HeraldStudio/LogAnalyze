@@ -12,11 +12,17 @@ import time
 #POST /api/pe HTTP/1.1\
 apiP = r".*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*"
 
+# Android
+#
 # "okhttp/3.1.2" 
+# IOS难的令人发指
+#
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
-# ""
-#deviceP = r"((okhttp.*)|(xiao\ hou\ tou\ mi\/com.heraldstudio.ios))"
-deviceP = r"(?P<android>.*okhttp.*)|(.*xiao.*(?P<ios_version>OS\ Version.*)\ \(Build.*\))|(?P<ios>.*IOS.*)|(?P<all>.*)"
+# "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
+deviceP = r"(?P<android>.*okhttp.*)|"  \
+           "(((.*\ iOS\ )|(.*Version\ ))(?P<ios_version>.*)(\ \(Build.*|;\ Scale.*))|"\
+           "(?P<ios>.*iOS.*)|"\
+           "(?P<all>.*)"
 
 # uuid=509d5e28ca9a583d47d4a78f45acebf252160779        uuid 为40位长
 uuidP = r"(.*)uuid=(?P<uuid>.{40})(\&*.*)|(.*user.*)"   # 将uuid提出
@@ -74,17 +80,17 @@ class LogItem():
         else:
             self.parm = parm
             
-            
-
         matchs = (devicePattern.match(device))          # 匹配设备信息
         if matchs != None:  
             if matchs.group('android') != None:
                 self.device = 'android'
             elif matchs.group('ios_version') != None or matchs.group('ios'):
                 self.device = 'ios'
-                self.ios_version = matchs.group(3)
+                self.ios_version = matchs.group('ios_version')
             elif matchs.group('all') != None:
                 self.device = 'other'
+                print("%d:%d dev-error in api %s, parm %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, parm, device)) 
             else:
                 print("%d:%d dev-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device)) 
@@ -106,7 +112,15 @@ def main():
         time.localtime(), 
         '203.208.60.230',
         'POST /api/card HTTP/1.1', 
-        '"okhttp/3.1.2"',
+        'Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)',
+        '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
+        '200')
+
+    logItem = LogItem(
+        time.localtime(), 
+        '203.208.60.230',
+        'POST /api/card HTTP/1.1', 
+     "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))",
         '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
         '200'
             ) 
@@ -114,6 +128,8 @@ def main():
     print(logItem.device)
     print(logItem.api)
     print(logItem.parm)
+    print(logItem.ios_version)
+    print(logItem.android_version)
 
 if __name__ == "__main__":
     main()
