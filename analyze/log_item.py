@@ -87,20 +87,10 @@ class LogItem():
             elif matchs.group('ios_version') != None or matchs.group('ios'):
                 self.device = 'ios'
                 self.ios_version = matchs.group('ios_version')
-            elif matchs.group('all') != None:
+            elif matchs.group('all') != None:          # 为了信息安全, 重要的parm信息不在此打印
                 self.device = 'other'
-                print("%d:%d dev-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
-            else:
-                print("%d:%d dev-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
-        else:
-            if device == '\"-\"':
-                self.device = 'empty_room'
-            else:
-                print("%d:%d dev-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
-                exit()
+                print("%d:%d dev-error in api %s, device %s" \
+                    % (time.tm_hour, time.tm_min, api, device)) 
 
         self.code = code
 
