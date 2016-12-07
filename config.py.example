@@ -15,9 +15,7 @@ logging.basicConfig(format=log_format,  \
         filename='py.log', \
         filemode='w')
 
-# 此项目中, 将python中logging打印出的日志
-# 与print打印出的信息分开来  
-# logging  
+
 
 mysql_host = '127.0.0.1'
 mysql_user= 'root'

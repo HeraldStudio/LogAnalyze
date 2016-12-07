@@ -10,6 +10,7 @@ from databases.tables import DayLogAnalyze
 from main import session
 from config import logging
 import json
+import IPython
 
 class DayLog():
 
@@ -40,7 +41,7 @@ class DayLog():
         self.log_list.append(log_item)
 
     def get_most_called(self):
-        """ 获取每日的接口调用前三十
+        """ 获取每日的接口调用前三十, 不到30, 全部返回
 
         """
         #logging.INFO("每日API调用前十")
@@ -66,7 +67,7 @@ class DayLog():
                 self.ip_count[logItem.ip] = 1
         
         data = sorted(self.ip_count.items(), key=lambda d:d[1], reverse=True)   # 排序
-        self.ip_count = dict((x, y) for x, y in data[-30:])
+        self.ip_count = dict((x, y) for x, y in data[0:30])
 
     def get_every_hour_called(self):
         """  获取每小时访问量
@@ -122,7 +123,40 @@ class DayLog():
                     self.android_version[logItem.android_version] += 1
                 else:
                     self.android_version[logItem.android_version] = 1
-    
+                    
+    def create_logging(self):
+        """ 将数据使用logging输出
+
+        """
+        logging.info("日期: %s, 总访问量: %d" % (self.date, len(self.log_list)))
+
+        logging.info("================+_api__+================")
+        for item in self.api_count:
+            logging.info("%20s : %d" % ( item, self.api_count[item]))
+        
+        logging.info("")
+        logging.info("================+__ip__+================")
+        for item in self.ip_count:
+            logging.info("%20s : %d" % ( item, self.ip_count[item]))
+            
+        
+        logging.info("")
+        logging.info("================+_device_+================")
+        for item in self.device_distribute:
+            logging.info("%20s : %d" % ( item, self.device_distribute[item]))
+            
+        logging.info("")
+        logging.info("================+__ios___+================")
+        for item in self.ios_version:
+            logging.info("%20s : %d" % ( item, self.ios_version[item]))
+
+        logging.info("")
+        logging.info("================+_android_+================")
+        for item in self.android_version:
+            logging.info("%20s : %d" % ( item, self.android_version[item]))
+            
+            
+
     def store_data(self):
         """ 将数据存储在数据库中
 

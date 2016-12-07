@@ -28,13 +28,14 @@ def process_dir(dir_proc):
     Returns: TODO
 
     """
+    add_head()
     for file in os.listdir(dir_proc):
         if os.path.isdir(os.path.join(dir_proc, file)):
-            logging.warning("%s is a directory" % file)
+            print("%s is a directory" % file)
             continue
         
         matchs = logFilePattern.match(file)
-        if matchs != None and matchs.group(0) != 'access_api.log-20160921':
+        if matchs != None:
             logging.info("process file %s, file date is %s" %(file, matchs.group('date'))) 
             process_every_file(os.path.join(dir_proc, file), matchs.group('date'))
         
@@ -52,11 +53,11 @@ def process_every_file(_file_path, _date):
     """
     
     old = session.query(DayLogAnalyze).filter(DayLogAnalyze.date == _date).all()
-    logging.warning("current file is " + _file_path)
+    print("current file is " + _file_path)
 
     # 查询数据库, 如果当前日期对应的日志已被解析, 则直接进行返回
     if old:
-        logging.warning("current date has been analyzed")
+        print("current date has been analyzed")
         return 
 
     global max_analyze      # 全局变量, 在main.py中定义
@@ -64,6 +65,7 @@ def process_every_file(_file_path, _date):
     if max_analyze == 0:
         return
 
+    logging.info("current file is " + _file_path)
     dayLog = DayLog(_date)
     parse_file(dayLog, _file_path)
     dayLog.get_every_hour_called()
@@ -73,7 +75,30 @@ def process_every_file(_file_path, _date):
     dayLog.get_ios_version()
     dayLog.get_android_version()
     
+    dayLog.create_logging()
+    add_sign()
     if _date == 'tmp':      # 临时检验的文件不保存到数据库, 只做分析使用
+        print(dayLog.date)
+        print(dayLog.api_count)
+        print(dayLog.ip_count)
+        print(dayLog.every_hour_count)
+        print(dayLog.device_distribute)
+        print(dayLog.ios_version)
         return
 
     dayLog.store_data()
+
+def add_head():
+    logging.info("From: heraldstudio < heraldstudio@sina.com >")
+    logging.info("Subject: 小猴偷米日志记录")
+    logging.info("")
+    logging.info("邮件为自动生成, 请勿回复")
+    logging.info("")
+    
+def add_sign():
+    # 邮件签名
+    logging.info("")
+    logging.info("")
+    logging.info("")
+    logging.info("---------------------------------------------------------")
+    logging.info("愿天下有情人, 我喜欢的人, 都是你这个样")
