@@ -5,7 +5,19 @@
  Create On: November 01, 2016
     Author: corvo
 """
+import logging
 
+# Python 日志记录
+log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
+
+logging.basicConfig(format=log_format,  \
+        level=logging.DEBUG, \
+        filename='py.log', \
+        filemode='w')
+
+# 此项目中, 将python中logging打印出的日志
+# 与print打印出的信息分开来  
+# logging  
 
 mysql_host = '127.0.0.1'
 mysql_user= 'root'

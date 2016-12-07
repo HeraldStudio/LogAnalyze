@@ -7,7 +7,8 @@
 """
 from analyze.log_item import LogItem 
 from databases.tables import DayLogAnalyze
-from main import session, logging
+from main import session
+from config import logging
 import json
 
 class DayLog():

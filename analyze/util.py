@@ -6,7 +6,7 @@
     Author: corvo
 """
 
-import logging
+from config import logging
 import fileinput
 import re
 import os
@@ -14,13 +14,6 @@ import time
 from analyze.log_item import LogItem
 import gzip
 
-# Python 日志记录
-log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
-logging.basicConfig(format=log_format, level=logging.DEBUG)
-  
-#日志的位置  
-dir_log  = r"../"  
-  
 #使用的nginx日志格式 如下 
 # log_format access  '$remote_addr [$time_local] "$request" $status "$request_body" "$http_user_agent"';
 #日志分析正则表达式  

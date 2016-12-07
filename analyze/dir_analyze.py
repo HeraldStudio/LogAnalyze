@@ -7,7 +7,8 @@
 """
 import os
 import re
-from main import logging, session, max_analyze
+from main import session, max_analyze
+from config import logging
 from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
 from analyze.day_log import DayLog
@@ -51,6 +52,7 @@ def process_every_file(_file_path, _date):
     """
     
     old = session.query(DayLogAnalyze).filter(DayLogAnalyze.date == _date).all()
+    logging.warning("current file is " + _file_path)
 
     # 查询数据库, 如果当前日期对应的日志已被解析, 则直接进行返回
     if old:

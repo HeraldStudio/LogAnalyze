@@ -6,6 +6,7 @@
     Author: corvo
 """
 
+from config import logging
 import re
 import time
 

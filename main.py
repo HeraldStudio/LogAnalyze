@@ -6,7 +6,8 @@
     Author: corvofeng@gmail.com
 """
 
-import logging
+
+from config import logging
 from analyze.util import parse_file
 from databases.db import engine
 from sqlalchemy.orm import sessionmaker
@@ -24,10 +25,6 @@ from analyze.day_log import DayLog
 # 每天晚上最多执行3天的日志分析
 max_analyze = 3
 
-# Python 日志记录
-log_format = '%(filename)s [%(asctime)s] [%(levelname)s] %(message)s' 
-logging.basicConfig(format=log_format, level=logging.DEBUG)
-  
 #日志的位置  
 dir_log  = r"/var/log/nginx"
 
