@@ -52,6 +52,10 @@ class DayLog():
                 self.api_count[logItem.api] = 1
 
         data = sorted(self.api_count.items(), key=lambda d:d[1], reverse=True) # 排序
+        logging.info("================+_api__+================")
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+        logging.info("\n========================================\n")
 
         self.api_count = dict((x, y) for x, y in data)    # 保存前十的数据
 
@@ -67,7 +71,23 @@ class DayLog():
                 self.ip_count[logItem.ip] = 1
         
         data = sorted(self.ip_count.items(), key=lambda d:d[1], reverse=True)   # 排序
+
+        logging.info("================+__ip__+================")
+
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+
+        logging.info("\n========================================\n")
+
         self.ip_count = dict((x, y) for x, y in data[0:30])
+    def create_logging_header(self):
+        """
+        向logging文件中记录综合信息
+
+        """
+        logging.info("日期: %s, 总访问量: %d" % (self.date, len(self.log_list)))
+
+        logging.info("")
 
     def get_every_hour_called(self):
         """  获取每小时访问量
@@ -81,7 +101,11 @@ class DayLog():
                 self.every_hour_count[logItem.time.tm_hour] = 1
         
         # 每小时数据不需要排序
-#        data =  sorted(self.every_hour_count.items(), key=lambda d:d[1], reverse=True)
+        data =  sorted(self.every_hour_count.items(), key=lambda d:d[1], reverse=True)
+        logging.info("================+_hour__+================")
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+        logging.info("\n========================================\n")
         #print(self.every_hour_count)
 
     def get_device_called(self):
@@ -96,6 +120,10 @@ class DayLog():
                 self.device_distribute[logItem.device] = 1
                 
         data = sorted(self.device_distribute.items(), key=lambda d:d[1], reverse=True)
+        logging.info("================+_device_+================")
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+        logging.info("\n========================================\n")
 
         #for item in data:
         #    print(item)
@@ -112,6 +140,11 @@ class DayLog():
                     self.ios_version[logItem.ios_version] += 1
                 else:
                     self.ios_version[logItem.ios_version] = 1
+        data = sorted(self.ios_version.items(), key=lambda d:d[1], reverse=True)
+        logging.info("================+__ios__+================")
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+        logging.info("\n========================================\n")
 
     def get_android_version(self):
         """获取当日android设备版本分布
@@ -123,40 +156,18 @@ class DayLog():
                     self.android_version[logItem.android_version] += 1
                 else:
                     self.android_version[logItem.android_version] = 1
+
+        data = sorted(self.android_version.items(), key=lambda d:d[1], reverse=True)
+        logging.info("================+android+================")
+        for x, y in data[0:30]: 
+            logging.info("%-20s :  %d" % (x, y))
+        logging.info("\n========================================\n")
                     
     def create_logging(self):
         """ 将数据使用logging输出
 
         """
-        logging.info("日期: %s, 总访问量: %d" % (self.date, len(self.log_list)))
-
-        logging.info("================+_api__+================")
-        for item in self.api_count:
-            logging.info("%20s : %d" % ( item, self.api_count[item]))
-        
-        logging.info("")
-        logging.info("================+__ip__+================")
-        for item in self.ip_count:
-            logging.info("%20s : %d" % ( item, self.ip_count[item]))
-            
-        
-        logging.info("")
-        logging.info("================+_device_+================")
-        for item in self.device_distribute:
-            logging.info("%20s : %d" % ( item, self.device_distribute[item]))
-            
-        logging.info("")
-        logging.info("================+__ios___+================")
-        for item in self.ios_version:
-            logging.info("%20s : %d" % ( item, self.ios_version[item]))
-
-        logging.info("")
-        logging.info("================+_android_+================")
-        for item in self.android_version:
-            logging.info("%20s : %d" % ( item, self.android_version[item]))
-            
-            
-
+        pass
     def store_data(self):
         """ 将数据存储在数据库中
 

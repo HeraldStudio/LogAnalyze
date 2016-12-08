@@ -68,6 +68,8 @@ def process_every_file(_file_path, _date):
     logging.info("current file is " + _file_path)
     dayLog = DayLog(_date)
     parse_file(dayLog, _file_path)
+
+    dayLog.create_logging_header()
     dayLog.get_every_hour_called()
     dayLog.get_most_ip()
     dayLog.get_most_called()
