@@ -99,8 +99,8 @@ class LogItem():
                           % (time.tm_hour, time.tm_min, api, ip, parm, device)) 
                 
                     # logging 简略信息
-                    logging.error("%d:%d uid-error in api %s, device %s" \
-                                  % (time.tm_hour, time.tm_min, api, device)) 
+                    #logging.error("%d:%d uid-error in api %s, device %s" \
+                    #              % (time.tm_hour, time.tm_min, api, device)) 
 
                 self.parm = parm
         else:
@@ -127,8 +127,8 @@ class LogItem():
                     % (time.tm_hour, time.tm_min, api, parm, device)) 
 
                 # logging 简略信息
-                logging.error("%d:%d dev-error in api %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, device)) 
+                #logging.error("%d:%d dev-error in api %s, device %s" \
+                #    % (time.tm_hour, time.tm_min, api, device)) 
 
         self.code = code
 

@@ -1,6 +1,8 @@
 #日志文件
 access_api*
 config.py
+SendMail.sh
+
 #### joe made this: http://goel.io/joe
 #### python ####
 # Byte-compiled / optimized / DLL files

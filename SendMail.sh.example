@@ -1,0 +1,32 @@
+#!/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+source /etc/profile
+
+mail_set=(
+'xxxj@test.com'     # xxx 
+'xxx@qq.com'      # xxx
+)
+
+Sub="From Google maillist!"
+# 遍历数组进行发送
+for i in "${mail_set[@]}"
+do
+
+    from_name="小猴偷米api后端日志分析"  
+    from="heraldstudio@sina.com"    
+    cc_name="小猴工作人员"
+    cc=${mail_set[@]}
+    to=$i
+    email_title="nginx日志"    
+    email_content="py.log"
+    email_subject="小猴nginx日志"   
+
+    echo -e "\
+To: \"${email_title}\" <${to}>\n
+Cc: \"${cc_name}\" <${cc}>\n
+From: \"${from_name}\" <${from}>\n 
+Subject: ${email_subject}\n\n
+`cat ${email_content}`" | mail -t -s "小猴偷米后端日志" 
+
+done

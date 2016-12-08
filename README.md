@@ -1,9 +1,10 @@
 # 小猴阿里云nginx日志分析
 
-## 请手动创建配置文件
+## 请手动创建配置文件及脚本
 
 ```bash
 cp config.py.example config.py
+cp SendMail.sh.example SendMail.sh
 ```
 
 ## crontab配置
