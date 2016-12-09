@@ -36,7 +36,7 @@ def process_dir(dir_proc):
         
         matchs = logFilePattern.match(file)
         if matchs != None:
-            logging.info("process file %s, file date is %s" %(file, matchs.group('date'))) 
+#            logging.info("process file %s, file date is %s" %(file, matchs.group('date'))) 
             process_every_file(os.path.join(dir_proc, file), matchs.group('date'))
         
         

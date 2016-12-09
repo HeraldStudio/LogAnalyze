@@ -71,6 +71,7 @@ class LogItem():
             self.api = matchs.group('api')  
             if len(self.api) > 18:
                 print("The api is %s" % self.api)
+                self.api = 'error'
         else:
             self.api = 'error'
             # Api error
