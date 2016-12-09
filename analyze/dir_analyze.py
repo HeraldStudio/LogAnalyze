@@ -7,7 +7,6 @@
 """
 import os
 import re
-from main import max_analyze
 from config import logging
 from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
@@ -18,6 +17,9 @@ fileP = r'access_api.log-(?P<date>\d*).gz'   # date别名为日志的时间尾�
 
 # 日志文件名称, date为时间
 logFilePattern = re.compile(fileP)
+
+# 每天晚上最多执行3天的日志分析
+max_analyze = 3
 
 def process_dir(dir_proc):
     """ 解析某个目录中的所有日志文件并保存在数据库中

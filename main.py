@@ -13,10 +13,6 @@ import analyze
 from analyze import dir_analyze
 
 
-# 每天晚上最多执行3天的日志分析
-max_analyze = 3
-
-
 def usage():
     print("help")
 
