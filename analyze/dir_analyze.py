@@ -7,17 +7,17 @@
 """
 import os
 import re
-from main import session, max_analyze
+from main import max_analyze
 from config import logging
 from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
-from analyze.day_log import DayLog
+from analyze.day_log import DayLog, session
 
 #  我们的日志文件名称 access_api.log-20160921.gz
-fileP = 'access_api.log-(?P<date>\d*).gz'   # date别名为日志的时间尾巴, 例如20160921
+fileP = r'access_api.log-(?P<date>\d*).gz'   # date别名为日志的时间尾巴, 例如20160921
 
 # 日志文件名称, date为时间
-logFilePattern = re.compile(fileP) 
+logFilePattern = re.compile(fileP)
 
 def process_dir(dir_proc):
     """ 解析某个目录中的所有日志文件并保存在数据库中
@@ -33,32 +33,29 @@ def process_dir(dir_proc):
         if os.path.isdir(os.path.join(dir_proc, file)):
             print("%s is a directory" % file)
             continue
-        
+
         matchs = logFilePattern.match(file)
         if matchs != None:
-#            logging.info("process file %s, file date is %s" %(file, matchs.group('date'))) 
             process_every_file(os.path.join(dir_proc, file), matchs.group('date'))
-        
-        
-        
+
+
+
 def process_every_file(_file_path, _date):
-    """TODO: Docstring for process_file.
+    """ 处理每个文件
 
     Args:
         file_path: 文件路径
         date     : 日志文件日期, 如果 date=='tmp', 则表明是临时测试使用
 
-    Returns: TODO
-
     """
-    
+
     old = session.query(DayLogAnalyze).filter(DayLogAnalyze.date == _date).all()
     print("current file is " + _file_path)
 
     # 查询数据库, 如果当前日期对应的日志已被解析, 则直接进行返回
     if old:
         print("current date has been analyzed")
-        return 
+        return
 
     global max_analyze      # 全局变量, 在main.py中定义
     max_analyze -= 1
@@ -76,7 +73,7 @@ def process_every_file(_file_path, _date):
     dayLog.get_device_called()
     dayLog.get_ios_version()
     dayLog.get_android_version()
-    
+
     dayLog.create_logging()
     add_sign()
     if _date == 'tmp':      # 临时检验的文件不保存到数据库, 只做分析使用
@@ -90,15 +87,20 @@ def process_every_file(_file_path, _date):
 
     dayLog.store_data()
 
+
 def add_head():
+    """ 为邮件添加头部信息
+    """
     logging.info("From: heraldstudio < heraldstudio@sina.com >")
     logging.info("Subject: 小猴偷米日志记录")
     logging.info("")
     logging.info("邮件为自动生成, 请勿回复")
     logging.info("")
-    
+
+
 def add_sign():
-    # 邮件签名
+    """ 邮件末尾签名
+    """
     logging.info("")
     logging.info("")
     logging.info("")

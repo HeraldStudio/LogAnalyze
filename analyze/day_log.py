@@ -7,10 +7,19 @@
 """
 from analyze.log_item import LogItem 
 from databases.tables import DayLogAnalyze
-from main import session
 from config import logging
 import json
 import IPython
+
+from sqlalchemy.orm import sessionmaker
+from databases.db import engine
+
+# 数据库会话
+
+Session = sessionmaker()        # 生成会话
+Session.configure(bind=engine)
+session = Session()
+
 
 class DayLog():
 

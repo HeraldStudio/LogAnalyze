@@ -6,10 +6,9 @@
     Author: corvo
 """
 
-from config import logging
 import re
 import time
-import IPython
+from config import logging
 
 
 #POST /api/pe HTTP/1.1\
@@ -24,11 +23,11 @@ apiP = r".*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*"
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
 deviceP = r"(?P<android>.*okhttp.*)|"  \
-           "(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*)))|"\
-           "(?P<ios>.*iOS.*)|" \
-           "((?P<chrome>).*Chrome.*)|" \
-           "((?P<mozilla>).*Mozilla.*)|" \
-           "(?P<all>.*)"
+          r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*)))|"\
+          r"(?P<ios>.*iOS.*)|" \
+          r"((?P<chrome>).*Chrome.*)|" \
+          r"((?P<mozilla>).*Mozilla.*)|" \
+          r"(?P<all>.*)"
 
 # 将uuid提出
 #1. uuid=509d5e28ca9a583d47d4a78f45acebf252160779        uuid 为40位长
@@ -42,6 +41,7 @@ uuidP = r"(.*)uuid=(?P<uuid>.{40})(\&*.*)|(.*user.*)"
 apiPattern = re.compile(apiP)
 devicePattern = re.compile(deviceP)
 uuidPattern = re.compile(uuidP)
+
 
 class LogItem():
     """日志中每一条记录"""
@@ -67,8 +67,8 @@ class LogItem():
         parm = parm.replace('\\x0D\\x0A', "")
 
         matchs = (apiPattern.match(api))   #匹配api接口
-        if matchs != None:  
-            self.api = matchs.group('api')  
+        if matchs != None:
+            self.api = matchs.group('api')
             if len(self.api) > 18:
                 print("The api is %s" % self.api)
                 self.api = 'error'
@@ -76,7 +76,7 @@ class LogItem():
             self.api = 'error'
             # Api error
             print("%d:%d api-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
+                    % (time.tm_hour, time.tm_min, api, parm, device))
 
         # 空教室端口仅使用本服务器转发数据, 故而直接返回
         if self.api == 'emptyroom':
@@ -85,8 +85,8 @@ class LogItem():
             self.code = 'code'
             return
 
-        # 如果是在调用api, 则对uuid进行记录, 还有ip 
-        if self.api != 'auth' and self.api != 'update':    
+        # 如果是在调用api, 则对uuid进行记录, 还有ip
+        if self.api != 'auth' and self.api != 'update':
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 if matchs.group('uuid') != None:
@@ -94,19 +94,19 @@ class LogItem():
             else:
                 if parm == '\"-\"':             # 未知参数, 仅在print标准输出中记录
                     print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
-                          % (time.tm_hour, time.tm_min, api, ip, parm, device)) 
+                          % (time.tm_hour, time.tm_min, api, ip, parm, device))
                 else:
                     print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
-                          % (time.tm_hour, time.tm_min, api, ip, parm, device)) 
-                
+                          % (time.tm_hour, time.tm_min, api, ip, parm, device))
+
                     # logging 简略信息
                     #logging.error("%d:%d uid-error in api %s, device %s" \
-                    #              % (time.tm_hour, time.tm_min, api, device)) 
+                    #              % (time.tm_hour, time.tm_min, api, device))
 
                 self.parm = parm
         else:
             self.parm = parm
-            
+
         matchs = (devicePattern.match(device))          # 匹配设备信息
         if matchs != None:  
             if matchs.group('android') != None:         # android 设备
@@ -125,11 +125,11 @@ class LogItem():
                 self.device = 'other'
                 # print 详细信息
                 print("%d:%d dev-error in api %s, parm %s, device %s" \
-                    % (time.tm_hour, time.tm_min, api, parm, device)) 
+                    % (time.tm_hour, time.tm_min, api, parm, device))
 
                 # logging 简略信息
                 #logging.error("%d:%d dev-error in api %s, device %s" \
-                #    % (time.tm_hour, time.tm_min, api, device)) 
+                #    % (time.tm_hour, time.tm_min, api, device))
 
         self.code = code
 
@@ -138,17 +138,17 @@ def main():
     测试主函数, 遇到有问题的log时, 将数据取出并在此进行测试
     """
     logItem = LogItem(
-        time.localtime(), 
+        time.localtime(),
         '203.208.60.230',
-        'POST /api/card HTTP/1.1', 
+        'POST /api/card HTTP/1.1',
         'Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)',
         '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
         '200')
 
     logItem = LogItem(
-        time.localtime(), 
+        time.localtime(),
         '203.208.60.230',
-        'POST /api/card HTTP/1.1', 
+        'POST /api/card HTTP/1.1',
      "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 10.0.1 (Build 14A403))",
      "------WebKitFormBoundarygflshEy0ij6cJAld\\x0d\\x0AContent-Disposition: form-data; name=\\x22uuid\\x22\\x0D\\x0A\\x0D\\x0Adba4f9dbc2c2340e345eab91b1068595f1a80a57\x0D\x0A------WebKitFormBoundarygflshEy0ij6cJAld--\x0D\x0A",
         '200'
