@@ -68,6 +68,7 @@ class LogItem():
         parm = parm.replace('\\x22',"=")
         parm = parm.replace('\\x0D\\x0A', "")
         device = device.replace('\\x22', "")
+        device = device.replace('"', "")
 
         matchs = (apiPattern.match(api))   #匹配api接口
         if matchs != None:
