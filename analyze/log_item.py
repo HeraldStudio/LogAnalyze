@@ -8,21 +8,23 @@
 
 import re
 import time
-from config import logging
 
-
-#POST /api/pe HTTP/1.1\
-apiP = r".*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*"
+# POST /api/pe HTTP/1.1\
+# "GET /herald/api/v1/huodong/get HTTP/1.1"
+apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
+        "(.*(?P<huodong>huodong))"
 
 # Android
 #
 # "okhttp/3.1.2" (之后会换掉)
+# "7.1:Pixel XL:25"  获取android版本及手机型号
 #
 # IOS难的令人发指
 #
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
 deviceP = r"(?P<android>.*okhttp.*)|"  \
+          r"((?P<android_version>.*):.*:.*)|" \
           r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*)))|"\
           r"(?P<ios>.*iOS.*)|" \
           r"((?P<chrome>).*Chrome.*)|" \
@@ -68,10 +70,14 @@ class LogItem():
 
         matchs = (apiPattern.match(api))   #匹配api接口
         if matchs != None:
-            self.api = matchs.group('api')
-            if len(self.api) > 18:
-                print("The api is %s" % self.api)
-                self.api = 'error'
+            if matchs.group('api') != None:
+                self.api = matchs.group('api')
+                if len(self.api) > 18:
+                    print("The api is %s" % self.api)
+                    self.api = 'error'
+            elif matchs.group('huodong')!= None:
+                self.api = 'huodong'
+                
         else:
             self.api = 'error'
             # Api error
@@ -111,6 +117,9 @@ class LogItem():
         if matchs != None:  
             if matchs.group('android') != None:         # android 设备
                 self.device = 'android'
+            elif matchs.group('android_version') != None:
+                self.device = 'android'
+                self.android_version = matchs.group('android_version')
             elif matchs.group('ios_version') != None or matchs.group('ios'): # ios 设备
                 self.device = 'ios'
                 self.ios_version = matchs.group('ios_version')
@@ -148,8 +157,8 @@ def main():
     logItem = LogItem(
         time.localtime(),
         '203.208.60.230',
-        'POST /api/card HTTP/1.1',
-     "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 10.0.1 (Build 14A403))",
+        "GET /herald/api/v1/huodong/get HTTP/1.1",
+        "7.1:Pixel XL:25",
      "------WebKitFormBoundarygflshEy0ij6cJAld\\x0d\\x0AContent-Disposition: form-data; name=\\x22uuid\\x22\\x0D\\x0A\\x0D\\x0Adba4f9dbc2c2340e345eab91b1068595f1a80a57\x0D\x0A------WebKitFormBoundarygflshEy0ij6cJAld--\x0D\x0A",
         '200'
             ) 
