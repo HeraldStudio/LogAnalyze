@@ -12,7 +12,8 @@ import time
 # POST /api/pe HTTP/1.1\
 # "GET /herald/api/v1/huodong/get HTTP/1.1"
 apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
-        "(.*(?P<huodong>huodong))"
+       r"(.*(?P<huodong>huodong))|" \
+       r"(.*(?P<yuyue>yuyue))"
 
 # Android
 #
@@ -77,8 +78,10 @@ class LogItem():
                 if len(self.api) > 18:
                     print("The api is %s" % self.api)
                     self.api = 'error'
-            elif matchs.group('huodong')!= None:
+            elif matchs.group('huodong') != None:
                 self.api = 'huodong'
+            elif matchs.group('yuyue') != None:
+                self.api = 'yuyue'
                 
         else:
             self.api = 'error'
@@ -94,7 +97,7 @@ class LogItem():
             return
 
         # 如果是在调用api, 则对uuid进行记录, 还有ip
-        if self.api != 'auth' and self.api != 'update' and self.api != 'huodong':
+        if self.api != 'auth' and self.api != 'update' and self.api != 'huodong' and self.api != 'yuyue':
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 if matchs.group('uuid') != None:
