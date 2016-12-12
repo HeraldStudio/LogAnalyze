@@ -67,6 +67,7 @@ class LogItem():
         self.ip = ip
         parm = parm.replace('\\x22',"=")
         parm = parm.replace('\\x0D\\x0A', "")
+        device = device.replace('\\x22', "")
 
         matchs = (apiPattern.match(api))   #匹配api接口
         if matchs != None:
@@ -92,7 +93,7 @@ class LogItem():
             return
 
         # 如果是在调用api, 则对uuid进行记录, 还有ip
-        if self.api != 'auth' and self.api != 'update':
+        if self.api != 'auth' and self.api != 'update' and self.api != 'huodong':
             matchs = (uuidPattern.match(parm))
             if matchs != None:
                 if matchs.group('uuid') != None:
