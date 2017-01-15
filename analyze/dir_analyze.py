@@ -7,6 +7,7 @@
 """
 import os
 import re
+
 from config import logging
 from databases.tables import DayLogAnalyze
 from analyze.util import parse_file
@@ -21,6 +22,7 @@ logFilePattern = re.compile(fileP)
 # 每天晚上最多执行3天的日志分析
 max_analyze = 3
 
+
 def process_dir(dir_proc):
     """ 解析某个目录中的所有日志文件并保存在数据库中
 
@@ -30,14 +32,14 @@ def process_dir(dir_proc):
     Returns: TODO
 
     """
-    add_head()
+    #add_head()
     for file in os.listdir(dir_proc):
         if os.path.isdir(os.path.join(dir_proc, file)):
             print("%s is a directory" % file)
             continue
 
         matchs = logFilePattern.match(file)
-        if matchs != None:
+        if matchs is not None:
             process_every_file(os.path.join(dir_proc, file), matchs.group('date'))
 
 

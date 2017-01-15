@@ -5,11 +5,12 @@
  Create On: October 27, 2016
     Author: corvo
 """
-from analyze.log_item import LogItem 
-from databases.tables import DayLogAnalyze
-from config import logging
+
 import json
 import IPython
+
+from databases.tables import DayLogAnalyze
+from config import logging
 
 from sqlalchemy.orm import sessionmaker
 from databases.db import engine
@@ -34,7 +35,8 @@ class DayLog():
         self.date = date
         self.log_list = []
         self.api_count = {}
-        self.ip_count = {}
+        self.ip_order = {}
+        self.ip_count = 0
         self.every_hour_count = {}
         self.device_distribute = {}
         self.ios_version = {}
@@ -74,12 +76,13 @@ class DayLog():
         """
         #print("每日ip接口调用前30")
         for logItem in self.log_list:
-            if logItem.ip in self.ip_count:
-                self.ip_count[logItem.ip] += 1
+            if logItem.ip in self.ip_order:
+                self.ip_order[logItem.ip] += 1
             else:
-                self.ip_count[logItem.ip] = 1
+                self.ip_order[logItem.ip] = 1
+                self.ip_count += 1
         
-        data = sorted(self.ip_count.items(), key=lambda d:d[1], reverse=True)   # 排序
+        data = sorted(self.ip_order.items(), key=lambda d:d[1], reverse=True)   # 排序
 
         logging.info("================+__ip__+================")
 
@@ -88,7 +91,8 @@ class DayLog():
 
         logging.info("\n========================================\n")
 
-        self.ip_count = dict((x, y) for x, y in data[0:30])
+        self.ip_order = dict((x, y) for x, y in data[0:30])
+
     def create_logging_header(self):
         """
         向logging文件中记录综合信息
@@ -182,7 +186,7 @@ class DayLog():
 
         """
         _api_count_json = json.dumps(self.api_count)
-        _ip_count_json = json.dumps(self.ip_count)
+        _ip_order_json = json.dumps(self.ip_order)
         _every_hour_json = json.dumps(self.every_hour_count)
         _device_distribute_json = json.dumps(self.device_distribute)
         _ios_version = json.dumps(self.ios_version)
@@ -197,10 +201,11 @@ class DayLog():
         dayLog = DayLogAnalyze(
             date = self.date,
             api_order = _api_count_json,
-            ip_order = _ip_count_json,
+            ip_order = _ip_order_json,
             every_hour_count = _every_hour_json,
             device_distribute = _device_distribute_json,
             call_count = len(self.log_list),
+            ip_count = self.ip_count,
             ios_version = _ios_version,
             android_version = _android_version
             )

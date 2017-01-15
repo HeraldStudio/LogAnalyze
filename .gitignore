@@ -1,3 +1,9 @@
+
+# ide文件
+.idea/
+.vscode/
+LogAnalyze.iml
+
 #日志文件
 access_api*
 config.py
