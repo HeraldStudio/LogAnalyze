@@ -19,13 +19,14 @@ apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
 # "okhttp/3.1.2" (之后会换掉)
 # "7.1:Pixel XL:25"  获取android版本及手机型号
 #
-# IOS难的令人发指
+# IOS难的令人发指, 真的好难
 #
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
+# "todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS 10.2.0) Alamofire/4.1.0" 最新版
 deviceP = r"(?P<android>.*okhttp.*)|"  \
           r"((?P<android_version>.*):.*:.*)|" \
-          r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*)))|"\
+          r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*) |(\) Alamofire)))|"\
           r"(?P<ios>.*iOS.*)|" \
           r"((?P<chrome>).*Chrome.*)|" \
           r"((?P<mozilla>).*Mozilla.*)|" \
@@ -152,7 +153,7 @@ def main():
         time.localtime(),
         '203.208.60.230',
         'POST /api/card HTTP/1.1',
-        'Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)',
+        '"todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS        10.2.0) Alamofire/4.1.0"',
         '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
         '200')
 
@@ -160,7 +161,7 @@ def main():
         time.localtime(),
         '203.208.60.230',
         "GET /herald/api/v1/huodong/get HTTP/1.1",
-        "7.1:Pixel XL:25",
+        '"todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS 10.2.0) Alamofire/4.1.0"',
      "------WebKitFormBoundarygflshEy0ij6cJAld\\x0d\\x0AContent-Disposition: form-data; name=\\x22uuid\\x22\\x0D\\x0A\\x0D\\x0Adba4f9dbc2c2340e345eab91b1068595f1a80a57\x0D\x0A------WebKitFormBoundarygflshEy0ij6cJAld--\x0D\x0A",
         '200'
             ) 
