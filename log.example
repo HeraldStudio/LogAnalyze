@@ -1,4 +1,0 @@
-223.104.4.56 [20/Sep/2016:06:25:11 +0800] "POST /api/card HTTP/1.1" 200 "uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1" "okhttp/3.1.2"
-223.3.214.5 [20/Sep/2016:06:25:11 +0800] "POST /api/card HTTP/1.1" 200 "timedelta=31&uuid=34915166988a06b75cdb43273abdd30f5344ca0f" "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
-223.104.4.56 [20/Sep/2016:06:25:12 +0800] "POST /api/pe HTTP/1.1" 499 "uuid=7e0064c27402554da094aee6c9761a45c2979103" "okhttp/3.1.2"
-223.104.4.56 [20/Sep/2016:06:25:12 +0800] "POST /api/library HTTP/1.1" 499 "uuid=7e0064c27402554da094aee6c9761a45c2979103" "okhttp/3.1.2"
