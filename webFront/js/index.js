@@ -57,6 +57,9 @@ function inital(){
 		week_chart.showLoading();
 
 		contents = data['content'];
+
+		filter();
+
 		currentIndex = contents.length-1
 		var date = contents[currentIndex]['date'] + '';
 		title.innerHTML = date.slice(0,4)+'年'+date.slice(4,6)+'月'+date.slice(6,8)+'日'+'的具体访问情况';
@@ -69,7 +72,7 @@ function inital(){
 		inital_device_chart(currentIndex);
 
 		week_chart.hideLoading();
-
+		console.log( contents );
 	})
 	.fail(function() {
 		console.log('request error');
@@ -82,6 +85,15 @@ function updateDayInfo(i){
 	inital_ios_chart(i);
 	inital_android_chart(i);
 	inital_device_chart(i);
+}
+
+function filter(){
+	for(var i in contents){
+		delete contents[i]['ios_version']['null'];
+		for( var j in contents[i]["api_order"])
+				if(contents[i]["api_order"][j] < 1000)
+					delete contents[i]["api_order"][j];
+	}
 }
 
 function inital_week_chart(){
@@ -111,11 +123,6 @@ function inital_week_chart(){
 function inital_api_chart(i){
 
 	api = contents[i]['api_order'];
-
-	for( var i in api)
-		if(api[i]<1000)
-			delete api[i];
-
 	api_chart.setOption({
 		title: {
 	    	text: 'API调用情况(没有展示数量较少的)',
