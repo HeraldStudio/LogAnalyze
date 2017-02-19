@@ -103,21 +103,99 @@ function inital_week_chart(){
 
 	week_chart.setOption({
 		title: {
-	    	text: '7天内访问量变化',
+	    	text: '7天内调用次数变化',
 	    	x: 'center',
-			y:'top'
+			y:'top',
+			fontSize: "1em"
 		},
-		tooltip: {},
+		tooltip: {
+			trigger: "axis"
+		},
 		xAxis: {
 		    data: Object.keys(week)
 		},
 		yAxis: {},
 		series: [{
-		    name: '访问量',
+		    name: '调用次数',
 		    type: 'line',
-		    data: Object.values(week)
-		}]
+		    data: Object.values(week),
+		    markPoint: {
+				data: [
+					{type: 'max', name: '最大值'},
+					{type: 'min', name: '最小值'}
+				]
+			},
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+		}],
+		toolbox: {		//工具箱设定
+			show : true,
+			orient: 'horizontal',      
+			x: 'right',
+			y: 'top',
+			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+			backgroundColor: 'rgba(0,0,0,0)',
+			borderColor: '#ccc',
+			borderWidth: 0,
+			padding: 5,
+			showTitle: true,
+			feature : {
+				mark : {
+					show : true,
+					title : {
+						mark : '辅助线-开关',
+						markUndo : '辅助线-删除',
+						markClear : '辅助线-清空'
+			        },
+					lineStyle : {
+						width : 1,
+						color : '#1e90ff',
+						type : 'dashed'
+					}
+				},
+				dataView : {
+					show : true,
+					title : '数据视图',
+					readOnly: true,
+					lang : ['数据视图', '关闭', '刷新'],
+					optionToContent: function(opt) {
+						var axisData = opt.xAxis[0].data;
+						var series = opt.series;
+						var table = '<table style="width:100%;text-align:center"><tbody><tr>'
+									+ '<td>时间</td>'
+									+ '<td>' + series[0].name + '</td>'
+									+ '</tr>';
+						for (var i = 0, l = axisData.length; i < l; i++) {
+							table += '<tr>'
+									+ '<td>' + axisData[i] + '</td>'
+									+ '<td>' + series[0].data[i] + '</td>'
+									+ '</tr>';
+						}
+						table += '</tbody></table>';
+						return table;
+					}
+				},
+				magicType: {
+					show : true,
+						title : {
+						line : '切换-折线图',
+						bar : '切换-柱形图',
+					},
+					type : ['line', 'bar']
+				},
+				saveAsImage : {
+					show : true,
+					title : '保存',
+					type : 'jpg',
+					lang : ['点击本地保存'] 
+				}
+			}
+		}
 	});
+
 }
 
 function inital_api_chart(i){
@@ -138,10 +216,65 @@ function inital_api_chart(i){
 		},
 		yAxis: {},
 		series: [{
-		    name: '访问量',
+		    name: '调用次数',
 		    type: 'bar',
 		    data: Object.values(api)
-		}]
+		}],
+		toolbox: {		//工具箱设定
+			show : true,
+			orient: 'horizontal',      
+			x: 'right',
+			y: 'top',
+			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+			backgroundColor: 'rgba(0,0,0,0)',
+			borderColor: '#ccc',
+			borderWidth: 0,
+			padding: 5,
+			showTitle: true,
+			feature : {
+				mark : {
+					show : true,
+					title : {
+						mark : '辅助线-开关',
+						markUndo : '辅助线-删除',
+						markClear : '辅助线-清空'
+			        },
+					lineStyle : {
+						width : 1,
+						color : '#1e90ff',
+						type : 'dashed'
+					}
+				},
+				dataView : {
+					show : true,
+					title : '数据视图',
+					readOnly: true,
+					lang : ['数据视图', '关闭', '刷新'],
+					optionToContent: function(opt) {
+						var axisData = opt.xAxis[0].data;
+						var series = opt.series;
+						var table = '<table style="width:100%;text-align:center"><tbody><tr>'
+									+ '<td>API</td>'
+									+ '<td>' + series[0].name + '</td>'
+									+ '</tr>';
+						for (var i = 0, l = axisData.length; i < l; i++) {
+							table += '<tr>'
+									+ '<td>' + axisData[i] + '</td>'
+									+ '<td>' + series[0].data[i] + '</td>'
+									+ '</tr>';
+						}
+						table += '</tbody></table>';
+						return table;
+					}
+				},
+				saveAsImage : {
+					show : true,
+					title : '保存',
+					type : 'jpg',
+					lang : ['点击本地保存'] 
+				}
+			}
+		}
 	});
 }
 
@@ -155,7 +288,7 @@ function inital_ios_chart(i){
 
 	ios_chart.setOption({
 			title: {
-				text: 'iOS端访问版本分布',
+				text: 'iOS端版本分布',
 				x: 'left',
 				y:'top'
 			},
@@ -170,12 +303,45 @@ function inital_ios_chart(i){
             },
 		    series : [
 		        {
-		            name: '访问量(百分比)',
+		            name: '调用次数(百分比)',
 		            type: 'pie',
 		            radius: '55%',
 		            data: ios_distribute
 		        }
-		    ]
+		    ],
+		    toolbox: {		//工具箱设定
+			show : true,
+			orient: 'horizontal',      
+			x: 'right',
+			y: 'top',
+			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+			backgroundColor: 'rgba(0,0,0,0)',
+			borderColor: '#ccc',
+			borderWidth: 0,
+			padding: 5,
+			showTitle: true,
+			feature : {
+				mark : {
+					show : true,
+					title : {
+						mark : '辅助线-开关',
+						markUndo : '辅助线-删除',
+						markClear : '辅助线-清空'
+			        },
+					lineStyle : {
+						width : 1,
+						color : '#1e90ff',
+						type : 'dashed'
+					}
+				},
+				saveAsImage : {
+					show : true,
+					title : '保存',
+					type : 'jpg',
+					lang : ['点击本地保存'] 
+				}
+			}
+		}
 	});
 }
 
@@ -194,7 +360,7 @@ function inital_android_chart(i){
 
 	android_chart.setOption({
 			title: {
-				text: 'Android端访问版本分布',
+				text: 'Android端版本分布',
 	    		x: 'left',
 	    		y: 'top'
 			},
@@ -209,12 +375,45 @@ function inital_android_chart(i){
             },
 		    series : [
 		        {
-		            name: '访问量(百分比)',
+		            name: '调用次数(百分比)',
 		            type: 'pie',
 		            radius: '55%',
 		            data:android_distribute
 		        }
-		    ]
+		    ],
+		    toolbox: {		//工具箱设定
+				show : true,
+				orient: 'horizontal',      
+				x: 'right',
+				y: 'top',
+				color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+				backgroundColor: 'rgba(0,0,0,0)',
+				borderColor: '#ccc',
+				borderWidth: 0,
+				padding: 5,
+				showTitle: true,
+				feature : {
+					mark : {
+						show : true,
+						title : {
+							mark : '辅助线-开关',
+							markUndo : '辅助线-删除',
+							markClear : '辅助线-清空'
+				        },
+						lineStyle : {
+							width : 1,
+							color : '#1e90ff',
+							type : 'dashed'
+						}
+					},
+					saveAsImage : {
+						show : true,
+						title : '保存',
+						type : 'jpg',
+						lang : ['点击本地保存'] 
+					}
+				}
+			}
 	});
 }
 
@@ -222,20 +421,88 @@ function inital_hour_chart(i){
 	hour = contents[i]['every_hour_count'];
 	hour_chart.setOption({
 		title: {
-	    	text: '一天内每时的访问变化',
+	    	text: '一天内每小时的调用次数变化',
 	    	x:'left',
 	    	y:'top'
 		},
-		tooltip: {},
+		tooltip: {
+			trigger: "xAxis"
+		},
 		xAxis: {
 		    data: Object.keys(hour)
 		},
 		yAxis: {},
 		series: [{
-		    name: '访问量',
+		    name: '调用次数',
 		    type: 'line',
-		    data: Object.values(hour)
-		}]
+		    data: Object.values(hour),
+		    markPoint: {
+				data: [
+					{type: 'max', name: '最大值'},
+					{type: 'min', name: '最小值'}
+				]
+			},
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+		}],
+		toolbox: {		//工具箱设定
+			show : true,
+			orient: 'horizontal',      
+			x: 'right',
+			y: 'top',
+			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+			backgroundColor: 'rgba(0,0,0,0)',
+			borderColor: '#ccc',
+			borderWidth: 0,
+			padding: 5,
+			showTitle: true,
+			feature : {
+				mark : {
+					show : true,
+					title : {
+						mark : '辅助线-开关',
+						markUndo : '辅助线-删除',
+						markClear : '辅助线-清空'
+			        },
+					lineStyle : {
+						width : 1,
+						color : '#1e90ff',
+						type : 'dashed'
+					}
+				},
+				dataView : {
+					show : true,
+					title : '数据视图',
+					readOnly: true,
+					lang : ['数据视图', '关闭', '刷新'],
+					optionToContent: function(opt) {
+						var axisData = opt.xAxis[0].data;
+						var series = opt.series;
+						var table = '<table style="width:100%;text-align:center"><tbody><tr>'
+									+ '<td>时间</td>'
+									+ '<td>' + series[0].name + '</td>'
+									+ '</tr>';
+						for (var i = 0, l = axisData.length; i < l; i++) {
+							table += '<tr>'
+									+ '<td>' + axisData[i] + '</td>'
+									+ '<td>' + series[0].data[i] + '</td>'
+									+ '</tr>';
+						}
+						table += '</tbody></table>';
+						return table;
+					}
+				},
+				saveAsImage : {
+					show : true,
+					title : '保存',
+					type : 'jpg',
+					lang : ['点击本地保存'] 
+				}
+			}
+		}
 	});
 }
 
@@ -249,7 +516,7 @@ function inital_device_chart(i){
 
 	device_chart.setOption({
 			title: {
-				text: '访问设备分布',
+				text: '设备分布',
 				x: 'left',
 				y:'top'
 			},
@@ -264,11 +531,44 @@ function inital_device_chart(i){
             },
 			series : [
 				{
-                    name:'访问量(百分比)',
+                    name:'调用次数(百分比)',
                     type:'pie',
                     data:device_distribute
                 }
-			]
+			],
+			toolbox: {		//工具箱设定
+				show : true,
+				orient: 'horizontal',      
+				x: 'right',
+				y: 'top',
+				color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
+				backgroundColor: 'rgba(0,0,0,0)',
+				borderColor: '#ccc',
+				borderWidth: 0,
+				padding: 5,
+				showTitle: true,
+				feature : {
+					mark : {
+						show : true,
+						title : {
+							mark : '辅助线-开关',
+							markUndo : '辅助线-删除',
+							markClear : '辅助线-清空'
+				        },
+						lineStyle : {
+							width : 1,
+							color : '#1e90ff',
+							type : 'dashed'
+						}
+					},
+					saveAsImage : {
+						show : true,
+						title : '保存',
+						type : 'jpg',
+						lang : ['点击本地保存'] 
+					}
+				}
+			}
 	});
 }
 
