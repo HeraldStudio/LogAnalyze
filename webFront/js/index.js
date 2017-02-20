@@ -50,11 +50,9 @@ function inital(){
 		data: {
 			date_start: transformDate(date),
 			date_cnt: 7},
-		timeout: 6000
+		timeout: 10000
 	})
 	.success(function(data){
-
-		week_chart.showLoading();
 
 		contents = data['content'];
 
@@ -72,7 +70,6 @@ function inital(){
 		inital_device_chart(currentIndex);
 
 		week_chart.hideLoading();
-		console.log( contents );
 	})
 	.fail(function() {
 		console.log('request error');
@@ -112,13 +109,13 @@ function inital_week_chart(){
 			trigger: "axis"
 		},
 		xAxis: {
-		    data: Object.keys(week)
+		    data: getKeys(week)
 		},
 		yAxis: {},
 		series: [{
 		    name: '调用次数',
 		    type: 'line',
-		    data: Object.values(week),
+		    data: getValues(week),
 		    markPoint: {
 				data: [
 					{type: 'max', name: '最大值'},
@@ -209,7 +206,7 @@ function inital_api_chart(i){
 		},
 		tooltip: {},
 		xAxis: {
-		    data: Object.keys(api),
+		    data: getKeys(api),
 		    axisLabel:{
 		    	interval: 0
 		    }
@@ -218,7 +215,7 @@ function inital_api_chart(i){
 		series: [{
 		    name: '调用次数',
 		    type: 'bar',
-		    data: Object.values(api)
+		    data: getValues(api)
 		}],
 		toolbox: {		//工具箱设定
 			show : true,
@@ -299,7 +296,7 @@ function inital_ios_chart(i){
             legend: {
             	x:'left',
             	y: 'bottom',
-            	data: Object.keys(temp)
+            	data: getKeys(temp)
             },
 		    series : [
 		        {
@@ -371,7 +368,7 @@ function inital_android_chart(i){
             legend: {
             	y: 'bottom',
             	x:'center',
-            	data: Object.keys(temp)
+            	data: getKeys(temp)
             },
 		    series : [
 		        {
@@ -429,13 +426,13 @@ function inital_hour_chart(i){
 			trigger: "xAxis"
 		},
 		xAxis: {
-		    data: Object.keys(hour)
+		    data: getKeys(hour)
 		},
 		yAxis: {},
 		series: [{
 		    name: '调用次数',
 		    type: 'line',
-		    data: Object.values(hour),
+		    data: getValues(hour),
 		    markPoint: {
 				data: [
 					{type: 'max', name: '最大值'},
@@ -525,7 +522,7 @@ function inital_device_chart(i){
 				formatter: "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend: {
-				data: Object.keys(temp),
+				data: getKeys(temp),
 				y: 'bottom',
 				x:'center'
             },
@@ -572,6 +569,8 @@ function inital_device_chart(i){
 	});
 }
 
+
+//用户点击监听函数
 week_chart.on('click', function (params) {
 	if (params.componentType === 'series' && params.seriesType === 'line'){
             var i = params['dataIndex'];
@@ -583,3 +582,24 @@ week_chart.on('click', function (params) {
             }
         }
 });
+
+
+//Object.keys()和Object.values()都为较新的方法，ECMAscript5
+//在一些旧浏览器中没有实现
+function getKeys(obj){
+	var keys = [];
+	for( var i in obj){
+		keys.push(i);
+	}
+
+	return keys;
+}
+
+function getValues(obj){
+	var values = [];
+	for( var i in obj){
+		values.push(obj[i]);
+	}
+
+	return values;
+}
