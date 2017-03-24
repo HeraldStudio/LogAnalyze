@@ -101,7 +101,7 @@ function inital_week_chart(){
 	week_chart.setOption({
 		title: {
 	    	text: '7天内调用次数变化',
-	    	x: 'center',
+	    	x: 'left',
 			y:'top',
 			fontSize: "1em"
 		},
@@ -109,13 +109,15 @@ function inital_week_chart(){
 			trigger: "axis"
 		},
 		xAxis: {
-		    data: getKeys(week)
+		    data: getKeys(week),
+		    boundaryGap: false
 		},
 		yAxis: {},
 		series: [{
 		    name: '调用次数',
 		    type: 'line',
 		    data: getValues(week),
+		    barMaxWidth: 35,
 		    markPoint: {
 				data: [
 					{type: 'max', name: '最大值'},
@@ -128,31 +130,14 @@ function inital_week_chart(){
                 ]
             }
 		}],
-		toolbox: {		//工具箱设定
+		toolbox: {
 			show : true,
 			orient: 'horizontal',      
 			x: 'right',
 			y: 'top',
-			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-			backgroundColor: 'rgba(0,0,0,0)',
-			borderColor: '#ccc',
-			borderWidth: 0,
-			padding: 5,
+			padding: 15,
 			showTitle: true,
 			feature : {
-				mark : {
-					show : true,
-					title : {
-						mark : '辅助线-开关',
-						markUndo : '辅助线-删除',
-						markClear : '辅助线-清空'
-			        },
-					lineStyle : {
-						width : 1,
-						color : '#1e90ff',
-						type : 'dashed'
-					}
-				},
 				dataView : {
 					show : true,
 					title : '数据视图',
@@ -215,33 +200,23 @@ function inital_api_chart(i){
 		series: [{
 		    name: '调用次数',
 		    type: 'bar',
+		    barMaxWidth: 35,
+		    markPoint: {
+				data: [
+					{type: 'max', name: '最大值'},
+					{type: 'min', name: '最小值'}
+				]
+			},
 		    data: getValues(api)
 		}],
-		toolbox: {		//工具箱设定
+		toolbox: {
 			show : true,
 			orient: 'horizontal',      
 			x: 'right',
 			y: 'top',
-			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-			backgroundColor: 'rgba(0,0,0,0)',
-			borderColor: '#ccc',
-			borderWidth: 0,
-			padding: 5,
+			padding: 15,
 			showTitle: true,
 			feature : {
-				mark : {
-					show : true,
-					title : {
-						mark : '辅助线-开关',
-						markUndo : '辅助线-删除',
-						markClear : '辅助线-清空'
-			        },
-					lineStyle : {
-						width : 1,
-						color : '#1e90ff',
-						type : 'dashed'
-					}
-				},
 				dataView : {
 					show : true,
 					title : '数据视图',
@@ -302,35 +277,18 @@ function inital_ios_chart(i){
 		        {
 		            name: '调用次数(百分比)',
 		            type: 'pie',
-		            radius: '55%',
+		            radius : [20, 110],
 		            data: ios_distribute
 		        }
 		    ],
-		    toolbox: {		//工具箱设定
+		    toolbox: {
 			show : true,
 			orient: 'horizontal',      
 			x: 'right',
 			y: 'top',
-			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-			backgroundColor: 'rgba(0,0,0,0)',
-			borderColor: '#ccc',
-			borderWidth: 0,
-			padding: 5,
+			padding: 15,
 			showTitle: true,
 			feature : {
-				mark : {
-					show : true,
-					title : {
-						mark : '辅助线-开关',
-						markUndo : '辅助线-删除',
-						markClear : '辅助线-清空'
-			        },
-					lineStyle : {
-						width : 1,
-						color : '#1e90ff',
-						type : 'dashed'
-					}
-				},
 				saveAsImage : {
 					show : true,
 					title : '保存',
@@ -374,35 +332,18 @@ function inital_android_chart(i){
 		        {
 		            name: '调用次数(百分比)',
 		            type: 'pie',
-		            radius: '55%',
+		            radius : [20, 110],
 		            data:android_distribute
 		        }
 		    ],
-		    toolbox: {		//工具箱设定
+		    toolbox: {
 				show : true,
 				orient: 'horizontal',      
 				x: 'right',
 				y: 'top',
-				color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-				backgroundColor: 'rgba(0,0,0,0)',
-				borderColor: '#ccc',
-				borderWidth: 0,
-				padding: 5,
+				padding: 15,
 				showTitle: true,
 				feature : {
-					mark : {
-						show : true,
-						title : {
-							mark : '辅助线-开关',
-							markUndo : '辅助线-删除',
-							markClear : '辅助线-清空'
-				        },
-						lineStyle : {
-							width : 1,
-							color : '#1e90ff',
-							type : 'dashed'
-						}
-					},
 					saveAsImage : {
 						show : true,
 						title : '保存',
@@ -426,7 +367,8 @@ function inital_hour_chart(i){
 			trigger: "xAxis"
 		},
 		xAxis: {
-		    data: getKeys(hour)
+		    data: getKeys(hour),
+		    boundaryGap: false
 		},
 		yAxis: {},
 		series: [{
@@ -445,31 +387,14 @@ function inital_hour_chart(i){
                 ]
             }
 		}],
-		toolbox: {		//工具箱设定
+		toolbox: {
 			show : true,
 			orient: 'horizontal',      
 			x: 'right',
 			y: 'top',
-			color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-			backgroundColor: 'rgba(0,0,0,0)',
-			borderColor: '#ccc',
-			borderWidth: 0,
-			padding: 5,
+			padding: 15,
 			showTitle: true,
 			feature : {
-				mark : {
-					show : true,
-					title : {
-						mark : '辅助线-开关',
-						markUndo : '辅助线-删除',
-						markClear : '辅助线-清空'
-			        },
-					lineStyle : {
-						width : 1,
-						color : '#1e90ff',
-						type : 'dashed'
-					}
-				},
 				dataView : {
 					show : true,
 					title : '数据视图',
@@ -530,37 +455,21 @@ function inital_device_chart(i){
 				{
                     name:'调用次数(百分比)',
                     type:'pie',
+                    radius: [20, 110],
                     data:device_distribute
                 }
 			],
-			toolbox: {		//工具箱设定
+			toolbox: {
 				show : true,
 				orient: 'horizontal',      
 				x: 'right',
 				y: 'top',
-				color : ['#1e90ff','#22bb22','#4b0082','#d2691e'],
-				backgroundColor: 'rgba(0,0,0,0)',
-				borderColor: '#ccc',
-				borderWidth: 0,
-				padding: 5,
+				padding: 15,
 				showTitle: true,
 				feature : {
-					mark : {
-						show : true,
-						title : {
-							mark : '辅助线-开关',
-							markUndo : '辅助线-删除',
-							markClear : '辅助线-清空'
-				        },
-						lineStyle : {
-							width : 1,
-							color : '#1e90ff',
-							type : 'dashed'
-						}
-					},
 					saveAsImage : {
 						show : true,
-						title : '保存',
+						title : '保存图片',
 						type : 'jpg',
 						lang : ['点击本地保存'] 
 					}
