@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+	<!-- <meta name="viewport" content="initial-scale=0.5"/> -->
 	<title>小猴偷米日志分析</title>
 </head>
 <style>
 
 body{
+	background-color: #E8EBED;
 	font-family:"Microsoft YaHei", 
 	Helvetica, Arial,"Hiragino Sans GB", 
 	"Source Han Sans CN", sans-serif;
@@ -18,20 +19,16 @@ header{
 	font-size: 2em;
 }
 
-h1{
-	font-size: 2em;
-}
-
 .main-container{
 	margin-left: auto;
 	margin-right: auto;	
 	width: 90%;
-	max-width: 1000px;
+	max-width: 800px;
 }
 
-.container{
+.chart_container{
 	width: 100%;
-	height: 500px;
+	height: 400px;
 	margin-top: 50px;
 }
 
@@ -42,21 +39,13 @@ footer{
 }
 
 @media screen and (max-width: 400px) {
-	body{
+/*	body{
 		font-size: 8px;
 	}
 	
 	.main-container{
 		width: 100%;
-	}
-
-	.container{
-		height: 200px;
-	}
-
-	#ios_version{
-		height: 500px;
-	}
+	}*/
 }
 
 </style>
@@ -65,19 +54,19 @@ footer{
 		<span>小猴偷米日志分析</span>
 	</header>
 	<div class="main-container">
-		<div id="week" class="container"></div>
+		<div id="week" class="chart_container"></div>
 		<h1 id='title'></h1>
-		<div id="api_order" class="container"></div>
-		<div id="ios_version" class="container"></div>
-		<div id="android_version" class="container"></div>
-		<div id="hour" class="container"></div>
-		<div id="device_distribute" class="container"></div>
+		<div id="api_order" class="chart_container"></div>
+		<div id="ios_version" class="chart_container"></div>
+		<div id="android_version" class="chart_container"></div>
+		<div id="hour" class="chart_container"></div>
+		<div id="device_distribute" class="chart_container"></div>
 	</div>
 	<footer>
 		<span>小猴偷米工作室</span>
 	</footer>
 </body>
-<script src="js/echarts.js"></script>
-<script src="js/jquery.js"></script>
+<script src="http://cdn.bootcss.com/echarts/3.4.0/echarts.js"></script>
+<script src="http://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
 <script src="js/index.js"></script>
 </html>
