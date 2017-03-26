@@ -101,6 +101,7 @@ function inital_week_chart(){
 	week_chart.setOption({
 		title: {
 	    	text: '7天内调用次数变化',
+	    	subtext: '点击线上某点查看具体访问情况',
 	    	x: 'left',
 			y:'top',
 			fontSize: "1em"
@@ -120,8 +121,8 @@ function inital_week_chart(){
 		    barMaxWidth: 35,
 		    markPoint: {
 				data: [
-					{type: 'max', name: '最大值'},
-					{type: 'min', name: '最小值'}
+					{type: 'max', name: '最大值',symbolSize:[100,50]},
+					{type: 'min', name: '最小值',symbolSize:[100,50]}
 				]
 			},
             markLine: {
@@ -185,7 +186,8 @@ function inital_api_chart(i){
 	api = contents[i]['api_order'];
 	api_chart.setOption({
 		title: {
-	    	text: 'API调用情况(没有展示数量较少的)',
+	    	text: 'API调用情况',
+	    	subtext: '没有展示数量少于1000的',
 	    	x: 'left',
 			y:'top'
 		},
@@ -203,8 +205,8 @@ function inital_api_chart(i){
 		    barMaxWidth: 35,
 		    markPoint: {
 				data: [
-					{type: 'max', name: '最大值'},
-					{type: 'min', name: '最小值'}
+					{type: 'max', name: '最大值',symbolSize:[100,50]},
+					{type: 'min', name: '最小值',symbolSize:[100,50]}
 				]
 			},
 		    data: getValues(api)
@@ -377,8 +379,8 @@ function inital_hour_chart(i){
 		    data: getValues(hour),
 		    markPoint: {
 				data: [
-					{type: 'max', name: '最大值'},
-					{type: 'min', name: '最小值'}
+					{type: 'max', name: '最大值', symbolSize:[100,50]},
+					{type: 'min', name: '最小值', symbolSize:[100,50]}
 				]
 			},
             markLine: {
