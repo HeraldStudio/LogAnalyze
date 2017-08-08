@@ -11,6 +11,8 @@ import re
 import os
 import time
 import gzip
+import mimetypes
+import IPython
 
 from analyze.log_item import LogItem
 from config import logging
@@ -56,9 +58,12 @@ userAgentP = r"""?P<userAgent>\"              #以"开始
         """
 
 # 原理: 主要通过空格和-来区分各不同项目，各项目内部写各自的匹配表达式, 更换日志格式请重新生成该串
-nginxLogPattern =       \
-        re.compile(r"(%s)\ (%s)\ (%s)\ (%s)\ (%s)\ (%s)" %  \
-                   (ipP, timeP, requestP, statusP, referP, userAgentP), re.VERBOSE)
+nginxLogPattern = \
+    re.compile(r"(%s)\ (%s)\ (%s)\ (%s)\ (%s)\ (%s)" % \
+               (ipP, timeP, requestP, statusP, referP, userAgentP), re.VERBOSE)
+
+
+
 
 # 解析时间 '[20/Sep/2016:07:49:11 +0800]'
 timeAnalyzePattern = '[%d/%b/%Y:%H:%M:%S %z]' 
@@ -80,9 +85,15 @@ def parse_file(dayLog, file):
     matchs = logFilePattern.match(file)
     logging.info("process file %s." % (file)) 
 
-    f_in = gzip.open(os.path.join(file), "rb")
+    if mimetypes.guess_type(os.path.join(file))[1] == 'gzip':
+        f_in = gzip.open(os.path.join(file), "r").readlines()
+    else:
+        f_in = open(os.path.join(file), "r").readlines()
+
     for line in f_in:
-        line = bytes.decode(line)
+        if type(line) == bytes:
+            line = bytes.decode(line)
+
         matchs = nginxLogPattern.match(line)
         if matchs is not None:
             ip = matchs.group("ip")

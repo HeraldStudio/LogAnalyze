@@ -25,12 +25,14 @@ apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
 # "xiao hou tou mi/com.heraldstudio.ios (50; OS Version 9.3.5 (Build 13G36))"
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
 # "todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS 10.2.0) Alamofire/4.1.0" 最新版
+# "MicroMessenger/6.5.10.1080 NetType/WIFI Language/zh_CN"    小程序版
 deviceP = r"(?P<android>.*okhttp.*)|"  \
           r"((?P<android_version>.*):.*:.*)|" \
           r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*) |(\) Alamofire)))|"\
           r"(?P<ios>.*iOS.*)|" \
           r"((?P<chrome>).*Chrome.*)|" \
           r"((?P<mozilla>).*Mozilla.*)|" \
+          r"((?P<MicroMessenger>).*MicroMessenger.*)|"\
           r"(?P<all>.*)"
 
 # 将uuid提出
@@ -104,9 +106,10 @@ class LogItem():
                 if matchs.group('uuid') != None:
                     self.uuid= matchs.group('uuid')
             else:
-                if parm == '\"-\"':             # 未知参数, 仅在print标准输出中记录
-                    print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
-                          % (time.tm_hour, time.tm_min, api, ip, parm, device))
+                if parm == '\"-\"':             # 未知参数, 该用户尚未登录, 所以不进行错误输出
+                    pass
+                    # print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
+                    #      % (time.tm_hour, time.tm_min, api, ip, parm, device))
                 else:
                     print("%d:%d uid-error in api %s, ip %s,  parm %s, device %s" \
                           % (time.tm_hour, time.tm_min, api, ip, parm, device))
@@ -131,15 +134,21 @@ class LogItem():
                 self.ios_version = matchs.group('ios_version')
             elif matchs.group('chrome') != None or matchs.group('mozilla') != None:  # web 设备
                 self.device = 'web'
+            elif matchs.group('MicroMessenger') != None:    # 微信小程序
+                self.device = 'MicroMessenger'
             elif matchs.group('all') == '\"-\"':            # 未知设备, 在标准输出中记录, 不在logging中记录
                 self.device = '-'
                 # print 详细信息
                 print("%d:%d dev-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device)) 
-            elif matchs.group('all') != None:          
-                self.device = 'other'
+            elif matchs.group('all') != None:
+                self.device = 'unknow'
+
+                # TODO 设备不存在, User Agent中, 当前可能存在设备无法获知的情况
+                # 目前认为是Android版问题, 暂时不进行输出
+                if device != "":
                 # print 详细信息
-                print("%d:%d dev-error in api %s, parm %s, device %s" \
+                    print("%d:%d dev-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device))
 
                 # logging 简略信息
@@ -167,7 +176,16 @@ def main():
         '"todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS 10.2.0) Alamofire/4.1.0"',
      "------WebKitFormBoundarygflshEy0ij6cJAld\\x0d\\x0AContent-Disposition: form-data; name=\\x22uuid\\x22\\x0D\\x0A\\x0D\\x0Adba4f9dbc2c2340e345eab91b1068595f1a80a57\x0D\x0A------WebKitFormBoundarygflshEy0ij6cJAld--\x0D\x0A",
         '200'
-            ) 
+            )
+
+    logItem = LogItem(
+        time.localtime(),
+        '203.208.60.230',
+        'POST /api/card HTTP/1.1',
+        '"MicroMessenger/6.5.10.1080 NetType/WIFI Language/zh_CN"',
+        '"uuid=7e0064c27402554da094aee6c9761a45c2979103&timedelta=1"',
+        '200')
+
 
     print(logItem.device)
     print(logItem.api)
