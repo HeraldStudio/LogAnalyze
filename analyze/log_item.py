@@ -11,8 +11,10 @@ import time
 
 # POST /api/pe HTTP/1.1\
 # "GET /herald/api/v1/huodong/get HTTP/1.1"
+# "GET /herald/api/v1/queryEmptyClassrooms/m HTTP/1.1"
 apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
        r"(.*(?P<huodong>huodong))|" \
+       r"(.*(?P<queryEmptyClassrooms>queryEmptyClassrooms))|" \
        r"(.*(?P<yuyue>yuyue))"
 
 # Android
@@ -26,6 +28,8 @@ apiP = r"(.*(POST|GET)\ /(api|uc)/(?P<api>.*)\ HTTP.*)|" \
 # "Herald/3.4 (iPhone; iOS 9.3.2; Scale/2.00)"
 # "todayext/1.9.8 (com.heraldstudio.ios.today-ext; build:53; iOS 10.2.0) Alamofire/4.1.0" 最新版
 # "MicroMessenger/6.5.10.1080 NetType/WIFI Language/zh_CN"    小程序版
+#
+# 'wechatdevtools appservice port/9974'
 deviceP = r"(?P<android>.*okhttp.*)|"  \
           r"((?P<android_version>.*):.*:.*)|" \
           r"(((.*\ iOS\ )|(.*OS\ Version\ ))(?P<ios_version>.*)((\ \(Build.*)|(;\ Scale.*) |(\) Alamofire)))|"\
@@ -33,6 +37,7 @@ deviceP = r"(?P<android>.*okhttp.*)|"  \
           r"((?P<chrome>).*Chrome.*)|" \
           r"((?P<mozilla>).*Mozilla.*)|" \
           r"((?P<MicroMessenger>).*MicroMessenger.*)|"\
+          r"((?P<wechatdevtools>).*wechatdevtools.*)|"\
           r"(?P<all>.*)"
 
 # 将uuid提出
@@ -83,6 +88,8 @@ class LogItem():
                     self.api = 'error'
             elif matchs.group('huodong') != None:
                 self.api = 'huodong'
+            elif matchs.group('queryEmptyClassrooms') != None:
+                self.api = 'emptyroom'
             elif matchs.group('yuyue') != None:
                 self.api = 'yuyue'
                 
@@ -136,6 +143,8 @@ class LogItem():
                 self.device = 'web'
             elif matchs.group('MicroMessenger') != None:    # 微信小程序
                 self.device = 'MicroMessenger'
+            elif matchs.group('wechatdevtools') != None:
+                self.device = 'wechatdevtools'
             elif matchs.group('all') == '\"-\"':            # 未知设备, 在标准输出中记录, 不在logging中记录
                 self.device = '-'
                 # print 详细信息
@@ -146,7 +155,7 @@ class LogItem():
 
                 # TODO 设备不存在, User Agent中, 当前可能存在设备无法获知的情况
                 # 目前认为是Android版问题, 暂时不进行输出
-                if device != "":
+                if device != '-' and device != '\"-\"' and device != "":
                 # print 详细信息
                     print("%d:%d dev-error in api %s, parm %s, device %s" \
                     % (time.tm_hour, time.tm_min, api, parm, device))

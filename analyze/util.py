@@ -107,7 +107,8 @@ def parse_file(dayLog, file):
             dayLog.add_log_item(logItem)                      # 向对象中添加元素
 
         else:  
-            raise Exception  
+            logging.info("Error log in %s:%s" % (file, line))
+            # raise Exception  
 
     fileinput.close()
 

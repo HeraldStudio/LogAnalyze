@@ -58,7 +58,7 @@ def process_every_file(_file_path, _date):
 
     # 查询数据库, 如果当前日期对应的日志已被解析, 则直接进行返回
     if old:
-        print("current date has been analyzed")
+        # print("current date has been analyzed")
         return
 
     global max_analyze      # 全局变量, 在main.py中定义
