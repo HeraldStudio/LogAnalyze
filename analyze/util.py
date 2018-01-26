@@ -6,7 +6,6 @@
     Author: corvo
 """
 
-import fileinput
 import re
 import os
 import time
@@ -86,9 +85,9 @@ def parse_file(dayLog, file):
     logging.info("process file %s." % (file)) 
 
     if mimetypes.guess_type(os.path.join(file))[1] == 'gzip':
-        f_in = gzip.open(os.path.join(file), "r").readlines()
+        f_in = gzip.open(os.path.join(file), "r")
     else:
-        f_in = open(os.path.join(file), "r").readlines()
+        f_in = open(os.path.join(file), "r")
 
     for line in f_in:
         if type(line) == bytes:
@@ -109,9 +108,7 @@ def parse_file(dayLog, file):
         else:  
             logging.info("Error log in %s:%s" % (file, line))
             # raise Exception  
-
-    fileinput.close()
-
+    f_in.close()
 
 def processDir(dir_proc):
     """传入文件夹, 从中筛选日志记录, 并进行读取
