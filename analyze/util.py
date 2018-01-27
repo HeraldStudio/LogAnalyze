@@ -109,7 +109,7 @@ def parse_file(dayLog, file):
                 logging.info("Error log in %s:%s" % (file, line))
                 # raise Exception  
     except Exception as e:
-        print e
+        pass
     finally:
         f_in.close()
 
