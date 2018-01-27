@@ -89,26 +89,29 @@ def parse_file(dayLog, file):
     else:
         f_in = open(os.path.join(file), "r")
 
-    for line in f_in:
-        if type(line) == bytes:
-            line = bytes.decode(line)
+    try:
+        for line in f_in:
+            if type(line) == bytes:
+                line = bytes.decode(line)
 
-        matchs = nginxLogPattern.match(line)
-        if matchs is not None:
-            ip = matchs.group("ip")
-            time = processTime(matchs.group("time"), timeAnalyzePattern)  # 解析时间
-            request = matchs.group("request")
-            status =  matchs.group("status")
-            refer = matchs.group("refer")
-            userAgent = matchs.group("userAgent")
+            matchs = nginxLogPattern.match(line)
+            if matchs is not None:
+                ip = matchs.group("ip")
+                time = processTime(matchs.group("time"), timeAnalyzePattern)  # 解析时间
+                request = matchs.group("request")
+                status =  matchs.group("status")
+                refer = matchs.group("refer")
+                userAgent = matchs.group("userAgent")
 
-            logItem = LogItem(time, ip, request, userAgent, refer, status)
-            dayLog.add_log_item(logItem)                      # 向对象中添加元素
-
-        else:  
-            logging.info("Error log in %s:%s" % (file, line))
-            # raise Exception  
-    f_in.close()
+                logItem = LogItem(time, ip, request, userAgent, refer, status)
+                dayLog.add_log_item(logItem)                      # 向对象中添加元素
+            else:  
+                logging.info("Error log in %s:%s" % (file, line))
+                # raise Exception  
+    except Exception as e:
+        print e
+    finally:
+        f_in.close()
 
 def processDir(dir_proc):
     """传入文件夹, 从中筛选日志记录, 并进行读取
